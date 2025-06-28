@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title id="dynamic-title">@darkzinwside</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --main-bg: #0e0e10;
+      --card-bg: rgba(14,14,16,1);
+      --border: #232329;
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --accent: #a1a1aa;
+      --button-bg: #a259ff;      /* roxo bonito */
+      --button-hover: #c084fc;   /* roxo claro para hover */
+      --about-bg: rgb(20 20 23/0.95);
+    }
+    body {
+      background: var(--main-bg); /* agora #0e0e10 */
+      color: var(--text-main);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      letter-spacing: 0.01em;
+    }
+    .main-card {
+      background: var(--card-bg); /* agora rgba(14,14,16,1) */
+      border-radius: 32px;
+      box-shadow: 0 8px 40px #000a;
+      max-width: 700px; /* aumentado para deixar o cartão mais largo */
+      width: 100%;
+      margin: 48px 0 24px 0;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      border: 1.5px solid var(--border);
+    }
+    .banner {
+      width: 100%;
+      aspect-ratio: 3/1;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .avatar-wrap {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      top: -88px;
+      margin-bottom: -72px;
+    }
+    .avatar {
+      width: 176px;
+      height: 176px;
+      border-radius: 50%;
+      background: var(--border);
+      object-fit: cover;
+      box-shadow: 0 4px 32px #000a;
+    }
+    .profile-info {
+      text-align: center;
+      margin-top: 0;
+      padding: 0 32px 0 32px;
+    }
+    .profile-info h1 {
+      font-family: 'Arial Black', 'Druk Wide', Arial, sans-serif;
+      font-size: 2.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 0.5rem 0 0.2rem 0;
+      letter-spacing: 2px;
+    }
+    .profile-info .location {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .profile-info .location img {
+      width: 20px;
+      height: 14px;
+      border-radius: 2px;
+      margin-right: 2px;
+    }
+    .profile-info .motto {
+      color: var(--text-muted);
+      font-size: 1.08rem;
+      margin: 0.7rem 0 1.2rem 0;
+    }
+    .socials {
+      display: flex;
+      justify-content: center;
+      align-items: center; /* centraliza verticalmente */
+      gap: 18px;           /* espaço entre os botões */
+      margin: 0.5rem 0 1.5rem 0;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;         /* tamanho menor, como antes */
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(24,24,27,0.7);
+      color: var(--text-main);
+      font-size: 1.3rem;   /* tamanho do ícone menor */
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .social-btn:hover {
+      background: var(--accent);
+      color: var(--main-bg);
+    }
+    .about-section {
+      background: var(--about-bg);
+      border-radius: 18px;
+      margin: 0 18px 24px 18px;
+      padding: 24px 20px 18px 20px;
+      text-align: left;
+      box-shadow: 0 2px 12px #0002;
+    }
+    .about-title {
+      font-weight: bold;
+      font-size: 1.13rem;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .about-text {
+      color: #eee;
+      font-size: 1.04rem;
+      margin: 0;
+    }
+    /* Substitua .konect-link por .custom-link */
+    .custom-link {
+      display: block;
+      margin: 24px auto 24px auto;
+      background: var(--button-bg);
+      color: var(--main-bg);
+      font-weight: bold;
+      padding: 13px 0;
+      border-radius: 12px;
+      text-decoration: none;
+      width: 85%;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 12px #0003;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    .custom-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 24px 8px #a259ffcc;
+      z-index: -1;
+    }
+
+    .custom-link:hover::after {
+      opacity: 1;
+    }
+
+    @media (max-width: 500px) {
+      .main-card {
+        border-radius: 0;
+        margin: 0;
+        max-width: 100vw;
+      }
+      .about-section {
+        margin: 0 4vw 24px 4vw;
+      }
+      .profile-info {
+        padding: 0 8vw;
+      }
+    }
+    /* Adicione ao final do seu <style> existente */
+    .themeToggle {
+      color: #bbb;
+      width: 3em;
+    }
+    .st-sunMoonThemeToggleBtn {
+      position: relative;
+      cursor: pointer;
+    }
+    .st-sunMoonThemeToggleBtn .themeToggleInput {
+      opacity: 0;
+      width: 100%;
+      aspect-ratio: 1;
+    }
+    .st-sunMoonThemeToggleBtn svg {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.4s ease;
+      transform: rotate(40deg);
+    }
+    .st-sunMoonThemeToggleBtn svg .sunMoon {
+      transform-origin: center center;
+      transition: inherit;
+      transform: scale(1);
+    }
+    .st-sunMoonThemeToggleBtn svg .sunRay {
+      transform-origin: center center;
+      transform: scale(0);
+    }
+    .st-sunMoonThemeToggleBtn svg mask > circle {
+      transition: transform 0.64s cubic-bezier(0.41, 0.64, 0.32, 1.575);
+      transform: translate(0px, 0px);
+    }
+    .st-sunMoonThemeToggleBtn svg .sunRay2 { animation-delay: 0.05s !important; }
+    .st-sunMoonThemeToggleBtn svg .sunRay3 { animation-delay: 0.1s !important; }
+    .st-sunMoonThemeToggleBtn svg .sunRay4 { animation-delay: 0.17s !important; }
+    .st-sunMoonThemeToggleBtn svg .sunRay5 { animation-delay: 0.25s !important; }
+    .st-sunMoonThemeToggleBtn svg .sunRay5 { animation-delay: 0.29s !important; }
+    .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg { transform: rotate(90deg); }
+    .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg mask > circle { transform: translate(16px, -3px); }
+    .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg .sunMoon { transform: scale(0.55); }
+    .st-sunMoonThemeToggleBtn .themeToggleInput:checked + svg .sunRay { animation: showRay1832 0.4s ease 0s 1 forwards; }
+    @keyframes showRay1832 {
+      0% { transform: scale(0);}
+      100% { transform: scale(1);}
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+  <!-- Troca de tema no canto superior direito -->
+  <div style="position:fixed;top:24px;right:32px;z-index:20;">
+    <label for="themeToggle" class="themeToggle st-sunMoonThemeToggleBtn" title="Trocar tema">
+      <input type="checkbox" id="themeToggle" class="themeToggleInput" />
+      <svg width="32" height="32" viewBox="0 0 20 20" fill="currentColor" stroke="none">
+        <mask id="moon-mask">
+          <rect x="0" y="0" width="20" height="20" fill="white"></rect>
+          <circle cx="11" cy="3" r="8" fill="black"></circle>
+        </mask>
+        <circle class="sunMoon" cx="10" cy="10" r="8" mask="url(#moon-mask)"></circle>
+        <g>
+          <circle class="sunRay sunRay1" cx="18" cy="10" r="1.5"></circle>
+          <circle class="sunRay sunRay2" cx="14" cy="16.928" r="1.5"></circle>
+          <circle class="sunRay sunRay3" cx="6" cy="16.928" r="1.5"></circle>
+          <circle class="sunRay sunRay4" cx="2" cy="10" r="1.5"></circle>
+          <circle class="sunRay sunRay5" cx="6" cy="3.1718" r="1.5"></circle>
+          <circle class="sunRay sunRay6" cx="14" cy="3.1718" r="1.5"></circle>
+        </g>
+      </svg>
+    </label>
+  </div>
+  <div class="main-card">
+    <div class="banner">
+      <img src="fotos/banner.jpg" alt="Banner">
+    </div>
+    <div class="avatar-wrap">
+      <img class="avatar" src="fotos/avatar.jpg" alt="Avatar">
+    </div>
+    <div class="profile-info">
+      <h1 style="text-transform:none; display:flex; align-items:center; justify-content:center; gap:8px;">
+        darkzinwside
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;" class="mr-2 h-6 w-6 hover:text-white text-gray-400">
+          <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" fill="currentColor" stroke-width="0"></path>
+        </svg>
+      </h1>
+      <div class="location">
+        <img src="https://cdn.jsdelivr.net/gh/madebybowtie/FlagKit@2.2/Assets/SVG/EU.svg" alt="Europe flag">
+        Europe
+      </div>
+      <div class="motto">Nemo me impune lacessit.</div>
+      <div class="socials">
+        <a class="social-btn" href="https://instagram.com/eduwside" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a class="social-btn" href="https://www.youtube.com/@darkzinmakeryt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a class="social-btn" href="https://discord.gg/k7qSACQQ" title="Discord"><i class="fab fa-discord"></i></a>
+        <a class="social-btn" href="https://www.youtube.com/@darkzinmakeryt" target="_blank" title="Website"><i class="fas fa-globe"></i></a>
+      </div>
+    </div>
+    <div class="about-section">
+      <div class="about-title">About</div>
+      <div class="about-text">Cogito, ergo sum.</div>
+    </div>
+    <a class="custom-link" href="https://discord.gg/k7SACQQ" target="_blank">Servidor OSU! Tech</a>
+  </div>
+  <script>
+    // Efeito de digitação e repetição no título, mais lento e suave, com @
+    const titleText = "@darkzinwside";
+    let i = 0;
+    let forward = true;
+
+    function typeTitle() {
+      let display = titleText.slice(0, i);
+      document.title = display;
+      if (forward) {
+        if (i < titleText.length) {
+          i++;
+        } else {
+          forward = false;
+          setTimeout(typeTitle, 1800); // pausa maior ao terminar
+          return;
+        }
+      } else {
+        if (i > 0) {
+          i--;
+        } else {
+          forward = true;
+        }
+      }
+      setTimeout(typeTitle, 220); // mais lento e suave
+    }
+    typeTitle();
+
+    // Troca de tema: abre outro HTML ao clicar
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      // Marcar o checkbox se estiver no tema claro
+      if (window.location.pathname.includes("main withehtml.html")) {
+        themeToggle.checked = true;
+      } else {
+        themeToggle.checked = false;
+      }
+      themeToggle.addEventListener('change', function () {
+        if (themeToggle.checked) {
+          window.location.href = "main withehtml.html"; // tema claro
+        } else {
+          window.location.href = "main.html"; // tema escuro
+        }
+      });
+    }
+  </script>
+</body>
+</html>
